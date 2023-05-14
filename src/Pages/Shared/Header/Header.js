@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../Context/AuthProvider';
+import { FaBeer, FaUser } from 'react-icons/fa';
+
+
 
 const Header = () => {
+
+    const { user, logoutUser } = useContext(AuthContext);
+
+    const handleSignOutUser = () => {
+        logoutUser()
+            .then(() => { })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
 
     const menuItems = <>
 
@@ -9,8 +24,29 @@ const Header = () => {
         <li><Link to='/about'>About</Link></li>
         <li><Link to='/service'>Service</Link></li>
         <li><Link to='/products'>Products</Link></li>
-        <li><Link to='/register'>Register</Link></li>
-        <li><Link to='/login'>Login</Link></li>
+        {
+            user?.uid ?
+                <li><Link onClick={handleSignOutUser} >Logout</Link></li>
+                :
+                <>
+                    <li><Link to='/register'>Register</Link></li>
+                    <li><Link to='/login'>Login</Link></li>
+                </>
+        }
+
+        {
+            user?.photoURL ?
+                <div className='flex items-center'>
+                    <img title={user?.displayName} src={user?.photoURL} className='w-[35px] h-[35px] rounded-full cursor-pointer' alt="" />
+                </div>
+                :
+                <div className='flex items-center justify-center'>
+                    <FaUser></FaUser>
+                </div>
+        }
+
+
+
 
     </>
 

@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 
 const Register = () => {
 
-    const {user, createUser} = useContext(AuthContext);
+    const { createUser, updateUser } = useContext(AuthContext);
     // console.log(user)
     const { register, handleSubmit } = useForm();
     const [error, setError] = useState(null);
@@ -15,16 +15,34 @@ const Register = () => {
 
     const handleRegisterForm = (data, e) => {
         createUser(data.email, data.password)
-        .then(result=> {
-            const  user = result.user;
-            toast.success('User Created Successfully')
-            e.target.reset();
-            console.log(user);
-        })
-        .catch(error=> {
-            setError(error.message);
-        })
+            .then(result => {
+                const user = result.user;
+
+                const profile = {
+                    displayName : data.name,
+                    photoURL: data.photoUrl
+                }
+
+                updateUser(profile)
+                .then(()=>{})
+                .catch(error=> console.log(error))
+
+
+                toast.success('User Created Successfully')
+                e.target.reset();
+                console.log(user);
+            })
+            .catch(error => {
+                setError(error.message);
+            })
+
+
+        console.log(data)
+
+
     }
+
+
 
     return (
         <div className="hero bg-base-100">
@@ -43,7 +61,7 @@ const Register = () => {
                                 <label className="label">
                                     <span className="label-text">Photo</span>
                                 </label>
-                                <input type="text" {...register('url', { required: true })} name='url' placeholder="enter your photo" className="input input-bordered" />
+                                <input type="url" {...register('photoUrl', { required: true })} name='photoUrl' placeholder="enter your photo" className="input input-bordered" />
                             </div>
                             <div className="form-control">
                                 <label className="label">
