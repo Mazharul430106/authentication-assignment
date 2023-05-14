@@ -11,6 +11,7 @@ import Services from "../../Services/Services";
 import Products from "../../Products/Products";
 import Login from "../../Login/Login";
 import Register from "../../Register/Register";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 
 export const router = createBrowserRouter([
@@ -28,11 +29,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/service',
-                element: <Services></Services>
+                element: <PrivateRoute><Services></Services></PrivateRoute>
             },
             {
                 path: '/products',
-                element: <Products></Products>
+                element: <PrivateRoute><Products></Products></PrivateRoute>
             },
             {
                 path: '/login',
