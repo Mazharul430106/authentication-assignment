@@ -1,17 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
+import { toast } from 'react-hot-toast';
 
 
 const Register = () => {
 
-    const user = useContext(AuthContext);
-    console.log(user)
-
+    const {user, createUser} = useContext(AuthContext);
+    // console.log(user)
     const { register, handleSubmit } = useForm();
-    const handleRegisterForm = (data) => {
-        console.log(data)
+    const [error, setError] = useState(null);
+
+
+    const handleRegisterForm = (data, e) => {
+        createUser(data.email, data.password)
+        .then(result=> {
+            const  user = result.user;
+            toast.success('User Created Successfully')
+            e.target.reset();
+            console.log(user);
+        })
+        .catch(error=> {
+            setError(error.message);
+        })
     }
 
     return (
@@ -45,7 +57,7 @@ const Register = () => {
                                 </label>
                                 <input type="password" {...register('password', { required: true })} name='password' placeholder="password" className="input input-bordered" />
                                 <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                    <a href="#" className="label-text-alt link link-hover text-[16px] text-red-600">{error}</a>
                                 </label>
                             </div>
                             <div className="form-control mt-6">
