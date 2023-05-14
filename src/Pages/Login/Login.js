@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../Context/AuthProvider';
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
+
+    const {loginUser} = useContext(AuthContext)
+
     const { register, handleSubmit } = useForm();
     const handleLoginForm = (data) => {
-        console.log(data)
+        loginUser(data.email, data.password)
+        .then(result => {
+            const user = result.user;
+            toast.success('User Login Successfully');
+            console.log(user);
+        })
+        .catch(error=> {
+            console.log(error);
+        })
     }
 
     return (
