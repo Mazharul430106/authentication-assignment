@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthProvider';
-import { FaBeer, FaUser } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 
 
 

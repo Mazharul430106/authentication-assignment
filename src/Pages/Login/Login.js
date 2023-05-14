@@ -3,23 +3,39 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
 import { toast } from 'react-hot-toast';
+import { GoogleAuthProvider } from "firebase/auth";
+
+
 
 const Login = () => {
 
-    const {loginUser} = useContext(AuthContext)
-
+    const { loginUser, providerLogin } = useContext(AuthContext)
     const { register, handleSubmit } = useForm();
+    const provider = new GoogleAuthProvider();
+
     const handleLoginForm = (data) => {
         loginUser(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                toast.success('User Login Successfully');
+                console.log(user);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    const handleGoogleLogin = ()=>{
+        providerLogin(provider)
         .then(result => {
             const user = result.user;
-            toast.success('User Login Successfully');
             console.log(user);
         })
         .catch(error=> {
-            console.log(error);
+            console.log(error)
         })
     }
+
 
     return (
         <div className="hero bg-base-100">
@@ -49,7 +65,7 @@ const Login = () => {
                         </form>
                         <div className="divider">OR</div>
                         <div className="form-control ">
-                            <button className="btn btn-primary">Login With Google</button>
+                            <button onClick={handleGoogleLogin} className="btn btn-primary">Login With Google</button>
                         </div>
 
                         <div className="form-control mt-6">
